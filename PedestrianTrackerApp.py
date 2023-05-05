@@ -12,10 +12,10 @@ blackNwhite = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 
 #pre trained classifier
 classifierFile = "cars.xml"
-
+pedestrianFile = 'pedestrian.xml'
 #create car classifier
 car_tracker = cv2.CascadeClassifier(classifierFile)
-
+pedestrianTracker = cv2.CascadeClassifier(pedestrianFile)
 #run forever until car stops
 while True:
     #read the current frame
@@ -29,10 +29,14 @@ while True:
 
     #detect cars
     cars = car_tracker.detectMultiScale(greyscaledFrame)
-
+    pedestrians = pedestrianTracker.detectMultiScale(greyscaledFrame)
     # draw rectangles around cars
     for (x, y, w, z) in cars:
         cv2.rectangle(frame, (x, y), (x + w, y + z), (0, 255, 255), 2)
+
+    for (x, y, w, z) in pedestrians:
+        cv2.rectangle(frame, (x, y), (x + w, y + z), (0, 255, 255), 2)
+
 
     cv2.imshow('Car Detector',frame)
     cv2.waitKey(1)
